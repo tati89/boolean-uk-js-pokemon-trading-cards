@@ -3,30 +3,50 @@
 
 console.log(data);
 
-function pokemonCard(name, src) {
+function pokemonCard(pokemon) {
   let sectionEl = document.querySelector(".cards");
 
+  //create article class="card"
   let articleEl = document.createElement("article");
-  console.log(articleEl.setAttribute("class", "card"));
-
+  articleEl.setAttribute("class", "card");
   sectionEl.appendChild(articleEl);
 
   //create title
   let h2TitleEl = document.createElement("h2");
   h2TitleEl.setAttribute("class", "card--title");
-  h2TitleEl.innerText = name;
-
+  h2TitleEl.innerText = pokemon.name;
   articleEl.appendChild(h2TitleEl);
 
-  let imgEl = document.createElement("img");
-  imgEl.src = src;
+  //create img
+  let pokemonImg = pokemon.sprites.other["official-artwork"].front_default;
 
+  let imgEl = document.createElement("img");
+  imgEl.style.width = "256px";
+  imgEl.style.marginLeft = "50px";
+  imgEl.style.marginRight = "50px";
+  imgEl.style.border = "0.1px solid lightgrey";
+  imgEl.src = pokemonImg;
   articleEl.appendChild(imgEl);
+
+  //create div class="card--text"
+  let divEl = document.createElement("div");
+  divEl.setAttribute("class", "card--text");
+  divEl.setAttribute("ID", "card-text");
+  articleEl.appendChild(divEl);
+
+  for (const statObject of pokemon.stats) {
+    let pokemonParagraf = pokemonP(statObject.stat.name, statObject.base_stat);
+    divEl.appendChild(pokemonParagraf);
+  }
 }
 
-for (let i = 0; i < data.length; i++) {
-  pokemonCard(
-    data[i].name,
-    data[i].sprites.other["official-artwork"].front_default
-  );
+function pokemonP(text, stat) {
+  let p = document.createElement("p");
+  p.setAttribute("class", "");
+  p.innerText = `${text}: ${stat}`;
+  return p;
+}
+
+for (const pokemon of data) {
+  pokemonCard(pokemon);
 }
